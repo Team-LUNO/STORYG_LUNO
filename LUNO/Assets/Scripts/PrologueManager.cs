@@ -22,6 +22,13 @@ public class PrologueManager : MonoBehaviour
     private bool firstPlay = true;
     private bool typeDone = false;
 
+    private bool start = false;
+
+    public void StartPrologue()
+    {
+        start = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,52 +38,55 @@ public class PrologueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (order < prologues.Length)
+        if (start)
         {
-            if (order == 0)
+            if (order < prologues.Length)
             {
-                if (firstPlay)
+                if (order == 0)
                 {
-                    firstPlay = false;
-
-                    frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
-                    StartCoroutine(PopUp(frontBubble));
-                    StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
-                }
-                if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
-                {
-                    order++;
-                    firstPlay = true;
-                    typeDone = false;
-                }
-            }
-            else
-            {
-                if (firstPlay)
-                {
-                    firstPlay = false;
-
-                    backBubble = frontBubble;
-                    frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
-
-                    if (backBubble != frontBubble)
+                    if (firstPlay)
                     {
-                        StartCoroutine(PopDown(backBubble));
+                        firstPlay = false;
+
+                        frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
                         StartCoroutine(PopUp(frontBubble));
+                        StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
                     }
-                    StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
+                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
+                    {
+                        order++;
+                        firstPlay = true;
+                        typeDone = false;
+                    }
                 }
-                if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
+                else
                 {
-                    order++;
-                    firstPlay = true;
-                    typeDone = false;
+                    if (firstPlay)
+                    {
+                        firstPlay = false;
+
+                        backBubble = frontBubble;
+                        frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
+
+                        if (backBubble != frontBubble)
+                        {
+                            StartCoroutine(PopDown(backBubble));
+                            StartCoroutine(PopUp(frontBubble));
+                        }
+                        StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
+                    }
+                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
+                    {
+                        order++;
+                        firstPlay = true;
+                        typeDone = false;
+                    }
                 }
             }
-        }
-        else if(order == prologues.Length)
-        {
-            StartCoroutine(PopDown(frontBubble));
+            else if (order == prologues.Length)
+            {
+                StartCoroutine(PopDown(frontBubble));
+            }
         }
     }
 
