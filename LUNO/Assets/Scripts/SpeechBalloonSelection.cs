@@ -18,12 +18,13 @@ public class SpeechBalloonSelection : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 방향키 조작
         if (index < selections.Length - 1 && Input.GetKeyDown(KeyCode.DownArrow))
         {
             selections[index].GetComponent<SpriteRenderer>().sprite = tws;
@@ -35,6 +36,54 @@ public class SpeechBalloonSelection : MonoBehaviour
             selections[index].GetComponent<SpriteRenderer>().sprite = tws;
             index--;
             selections[index].GetComponent<SpriteRenderer>().sprite = twsok;
+        }
+
+        // 숫자키 조작
+        if(selections.Length >= 2)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                for(int i = 0; i < selections.Length; i++)
+                {
+                    selections[i].GetComponent<SpriteRenderer>().sprite = tws;
+                }
+                selections[0].GetComponent<SpriteRenderer>().sprite = twsok;
+                index = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                for (int i = 0; i < selections.Length; i++)
+                {
+                    selections[i].GetComponent<SpriteRenderer>().sprite = tws;
+                }
+                selections[1].GetComponent<SpriteRenderer>().sprite = twsok;
+                index = 1;
+            }
+        }
+        if(selections.Length >= 3)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                Debug.Log("3");
+                for (int i = 0; i < selections.Length; i++)
+                {
+                    selections[i].GetComponent<SpriteRenderer>().sprite = tws;
+                }
+                selections[2].GetComponent<SpriteRenderer>().sprite = twsok;
+                index = 2;
+            }
+        }
+        if(selections.Length >= 4)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                for (int i = 0; i < selections.Length; i++)
+                {
+                    selections[i].GetComponent<SpriteRenderer>().sprite = tws;
+                }
+                selections[3].GetComponent<SpriteRenderer>().sprite = twsok;
+                index = 3;
+            }
         }
     }
 }
