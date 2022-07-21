@@ -29,6 +29,13 @@ public class PrologueManager : MonoBehaviour
         start = true;
     }
 
+    public void IncreaseOrder()
+    {
+        order++;
+        firstPlay = true;
+        typeDone = false;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,17 +72,50 @@ public class PrologueManager : MonoBehaviour
                     {
                         firstPlay = false;
 
-                        backBubble = frontBubble;
+                        if (prologues[order - 1].size == 9)
+                        {
+                            backBubble = frontBubble.transform.GetChild(int.Parse(prologues[order - 1].sentence)).gameObject;
+                        }
+                        else
+                        {
+                            backBubble = frontBubble;
+                        }
                         frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
 
                         if (backBubble != frontBubble)
                         {
-                            StartCoroutine(PopDown(backBubble));
+                            if (prologues[order - 1].size == 9)
+                            {
+                                StartCoroutine(PopDown(backBubble, backBubble.transform.childCount));
+                            }
+                            else
+                            {
+                                StartCoroutine(PopDown(backBubble));
+                            }
                             StartCoroutine(PopUp(frontBubble));
                         }
-                        StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
+
+                        if (prologues[order].size == 9)
+                        {
+                            frontBubble.transform.GetChild(int.Parse(prologues[order].sentence)).gameObject.SetActive(true);
+                        }
+                        else
+                        {
+                            StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
+                        }
                     }
-                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
+                    /*
+                    if(typeDone && prologues[order + 1].size == 9)
+                    {
+                        StartCoroutine(PopDown(backBubble));
+                        GameObject selectionBubble = prologues[order + 1].speaker.transform.GetChild(0).GetChild(prologues[order + 1].size - 1).gameObject;
+                        selectionBubble.SetActive(true);
+                        selectionBubble.transform.GetChild(int.Parse(prologues[order + 1].sentence)).gameObject.SetActive(true);
+                        order++;
+
+                    }
+                    */
+                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone && prologues[order].size != 9)
                     {
                         order++;
                         firstPlay = true;
@@ -92,15 +132,23 @@ public class PrologueManager : MonoBehaviour
 
     IEnumerator PopUp(GameObject bubble)
     {
-        Debug.Log("up");
         bubble.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
     }
 
     IEnumerator PopDown(GameObject bubble)
     {
-        Debug.Log("down");
         bubble.GetComponent<Animator>().SetBool("close", true);
+        yield return new WaitForSeconds(0.2f);
+        bubble.SetActive(false);
+    }
+
+    IEnumerator PopDown(GameObject bubble, int num)
+    {
+        for(int i = 0; i < num; i++)
+        {
+            bubble.transform.GetChild(i).GetComponent<Animator>().SetBool("close", true);
+        }
         yield return new WaitForSeconds(0.5f);
         bubble.SetActive(false);
     }
@@ -110,7 +158,7 @@ public class PrologueManager : MonoBehaviour
         Text text = bubble.transform.GetChild(0).GetComponent<Text>();
         text.text = string.Empty;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
 
         foreach (var letter in sentence)
         {

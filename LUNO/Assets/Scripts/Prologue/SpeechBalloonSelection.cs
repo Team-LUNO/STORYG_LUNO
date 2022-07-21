@@ -13,12 +13,13 @@ public class SpeechBalloonSelection : MonoBehaviour
     [SerializeField]
     private Sprite twsok;
 
+    private SelectionBalloon selectionBalloon;
     private int index = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        selectionBalloon = gameObject.GetComponent<SelectionBalloon>();
     }
 
     // Update is called once per frame
@@ -64,7 +65,6 @@ public class SpeechBalloonSelection : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                Debug.Log("3");
                 for (int i = 0; i < selections.Length; i++)
                 {
                     selections[i].GetComponent<SpriteRenderer>().sprite = tws;
@@ -83,6 +83,27 @@ public class SpeechBalloonSelection : MonoBehaviour
                 }
                 selections[3].GetComponent<SpriteRenderer>().sprite = twsok;
                 index = 3;
+            }
+        }
+
+        // 엔터 눌렀을 때
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if(index == 0)
+            {
+                selectionBalloon.First();
+            }
+            else if(index == 1)
+            {
+                selectionBalloon.Second();
+            }
+            else if(index == 2)
+            {
+                selectionBalloon.Third();
+            }
+            else if(index == 3)
+            {
+                selectionBalloon.Fourth();
             }
         }
     }
