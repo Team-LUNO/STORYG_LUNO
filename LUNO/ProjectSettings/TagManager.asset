@@ -3,10 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Rope1
-  - Rope2
-  - RopeFinish
+  tags: []
   layers:
   - Default
   - TransparentFX

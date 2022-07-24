@@ -10,9 +10,6 @@ public class Move : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer spriteRenderer;
     Animator anim;
-
-    bool isLadder = false;
-    public float speed = 10f;
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -61,6 +58,7 @@ public class Move : MonoBehaviour
 
         rigid.AddForce(Vector2.right * h, ForceMode2D.Impulse);
 
+
         // 플레이어의 최대 속도를 제한하는 기능
         if(rigid.velocity.x > maxSpeed)
         {
@@ -82,29 +80,6 @@ public class Move : MonoBehaviour
                     anim.SetBool("IsJump", false);
             }
         }
-
-        //사다리 타기
-        if(isLadder)
-        {
-            float v = Input.GetAxis("Vertical");
-            rigid.velocity = new Vector2(rigid.velocity.x, v * speed);
-        }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        //사다리 위에 있을 때
-        if(collision.gameObject.CompareTag("Rope2"))
-        {
-            isLadder = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        //사다리 아닐때
-        if (collision.gameObject.CompareTag("Rope2"))
-        {
-            isLadder = false;
-        }
-    }
 }
