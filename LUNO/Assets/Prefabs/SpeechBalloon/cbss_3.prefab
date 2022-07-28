@@ -50,9 +50,8 @@ MonoBehaviour:
   - {fileID: 1794312561302179341}
   - {fileID: 1794312561227181473}
   - {fileID: 1794312562876606546}
-  tws: {fileID: 21300000, guid: edac6af082aae4022b407a133e6e475a, type: 3}
-  twsok: {fileID: 21300000, guid: 30ecd34dc27044d689fb627073c4b614, type: 3}
-  selectionBalloon: {fileID: 0}
+  tws: {fileID: 21300000, guid: 91b9bfd755b944949b508967c5f2efb8, type: 3}
+  twsok: {fileID: 21300000, guid: 96d4fc7ed8f444f0884c5fd8f38f9ac8, type: 3}
 --- !u!1 &1794312561227181473
 GameObject:
   m_ObjectHideFlags: 0

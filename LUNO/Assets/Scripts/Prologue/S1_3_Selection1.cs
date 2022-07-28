@@ -27,5 +27,6 @@ public class S1_3_Selection1 : SelectionBalloon
     public override void Second()
     {
         Debug.Log("책 다시 읽기");
+        prologueManager.IncreaseOrder();
     }
 }

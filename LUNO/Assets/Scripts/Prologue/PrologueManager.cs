@@ -19,6 +19,7 @@ public class PrologueManager : MonoBehaviour
     private int order = 0;
     private GameObject frontBubble;
     private GameObject backBubble;
+    private GameObject selectionBubble;
     private bool firstPlay = true;
     private bool typeDone = false;
 
@@ -72,7 +73,7 @@ public class PrologueManager : MonoBehaviour
                     {
                         firstPlay = false;
 
-                        if (prologues[order - 1].size == 9)
+                        if (prologues[order - 1].size == 9 || prologues[order - 1].size == 10)
                         {
                             backBubble = frontBubble.transform.GetChild(int.Parse(prologues[order - 1].sentence)).gameObject;
                         }
@@ -80,22 +81,29 @@ public class PrologueManager : MonoBehaviour
                         {
                             backBubble = frontBubble;
                         }
+
                         frontBubble = prologues[order].speaker.transform.GetChild(0).GetChild(prologues[order].size - 1).gameObject;
 
                         if (backBubble != frontBubble)
                         {
-                            if (prologues[order - 1].size == 9)
+                            if (prologues[order - 1].size == 9 || prologues[order - 1].size == 10)
                             {
                                 StartCoroutine(PopDown(backBubble, backBubble.transform.childCount));
+                                StartCoroutine(PopDown(selectionBubble));
+                            }
+                            else if(prologues[order].size == 9 || prologues[order].size == 10)
+                            {
+                                selectionBubble = backBubble;
                             }
                             else
                             {
                                 StartCoroutine(PopDown(backBubble));
                             }
+
                             StartCoroutine(PopUp(frontBubble));
                         }
-
-                        if (prologues[order].size == 9)
+                        
+                        if (prologues[order].size == 9 || prologues[order].size == 10)
                         {
                             frontBubble.transform.GetChild(int.Parse(prologues[order].sentence)).gameObject.SetActive(true);
                         }
@@ -104,18 +112,19 @@ public class PrologueManager : MonoBehaviour
                             StartCoroutine(TypeSentence(frontBubble, prologues[order].sentence));
                         }
                     }
+
                     /*
                     if(typeDone && prologues[order + 1].size == 9)
                     {
-                        StartCoroutine(PopDown(backBubble));
+                        //StartCoroutine(PopDown(backBubble));
                         GameObject selectionBubble = prologues[order + 1].speaker.transform.GetChild(0).GetChild(prologues[order + 1].size - 1).gameObject;
                         selectionBubble.SetActive(true);
                         selectionBubble.transform.GetChild(int.Parse(prologues[order + 1].sentence)).gameObject.SetActive(true);
                         order++;
-
                     }
                     */
-                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone && prologues[order].size != 9)
+                    
+                    if ((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Return)) && typeDone)
                     {
                         order++;
                         firstPlay = true;
@@ -125,7 +134,15 @@ public class PrologueManager : MonoBehaviour
             }
             else if (order == prologues.Length)
             {
-                StartCoroutine(PopDown(frontBubble));
+                if (frontBubble.transform.GetChild(0).childCount == 0)
+                {
+                    StartCoroutine(PopDown(frontBubble));
+                }
+                else
+                {
+                    StartCoroutine(PopDown(frontBubble.transform.GetChild(int.Parse(prologues[order - 1].sentence)).gameObject, frontBubble.transform.childCount));
+                    StartCoroutine(PopDown(backBubble));
+                }
             }
         }
     }
